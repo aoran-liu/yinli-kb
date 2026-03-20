@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>引力 · 知识到行动</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo" title="引力">🌀</div>
+
+    <button class="nav-btn active" id="nav-feed">
+      📥
+      <span class="nav-tooltip">收藏 Feed</span>
+      <span class="badge" id="badge-unprocessed" style="display:none"></span>
+    </button>
+
+    <button class="nav-btn" id="nav-action">
+      ⚡
+      <span class="nav-tooltip">行动视图</span>
+    </button>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-title" id="header-title">全部知识</div>
+      <div class="search-wrap">
+        <span class="ico">🔍</span>
+        <input class="search-input" id="search-input" placeholder="搜索…" autocomplete="off">
+      </div>
+      <span style="font-size:12px;color:var(--text-3);white-space:nowrap">
+        <span id="badge-total">0</span> 条
+      </span>
+    </div>
+
+    <!-- Quick Add (feed only) -->
+    <div id="quick-add-area" class="quick-add">
+      <div class="quick-add-box">
+        <div class="qa-top">
+          <textarea
+            id="qa-content"
+            class="qa-textarea"
+            placeholder="粘贴一个链接、输入想法或笔记… (⌘↵ 保存)"
+            rows="1"
+          ></textarea>
+        </div>
+        <div class="qa-bottom">
+          <select id="qa-intent" class="intent-select">
+            <option value="later">🌀 以后再说</option>
+            <option value="writing">✍️ 写作</option>
+            <option value="decision">⚖️ 决策</option>
+            <option value="learning">📖 学习</option>
+            <option value="sharing">📡 分享</option>
+          </select>
+          <input
+            id="qa-nextstep"
+            class="nextstep-input"
+            placeholder="→ 下一步想做什么？（可选）"
+            autocomplete="off"
+          >
+          <button class="btn-save" id="qa-save">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feed -->
+    <div id="feed-area" class="feed-area">
+      <!-- Filter bar -->
+      <div class="filter-bar" id="filter-bar">
+        <button class="filter-pill active" data-intent="all">全部</button>
+        <button class="filter-pill" data-intent="writing">✍️ 写作</button>
+        <button class="filter-pill" data-intent="decision">⚖️ 决策</button>
+        <button class="filter-pill" data-intent="learning">📖 学习</button>
+        <button class="filter-pill" data-intent="sharing">📡 分享</button>
+        <button class="filter-pill" data-intent="later">🌀 以后再说</button>
+      </div>
+
+      <!-- Cards -->
+      <div id="feed-grid"></div>
+    </div>
+
+    <!-- Action View -->
+    <div id="action-view" class="action-view" style="display:none"></div>
+
+  </main>
+</div>
+
+<!-- Detail Overlay -->
+<div class="overlay" id="overlay" style="display:none"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
