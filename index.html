@@ -227,6 +227,21 @@
 
     @keyframes fadeUp { from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);} }
     .fade-in { animation: fadeUp .25s ease both; }
+
+    /* HOME QUICK ADD */
+    .home-quick-add { margin-bottom: 18px; }
+    .hqa-wrap { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1.5px solid var(--border2); border-radius: 14px; padding: 11px 14px; cursor: text; transition: border-color .15s, box-shadow .15s; position: relative; }
+    .hqa-wrap.focused { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(123,111,255,.1); }
+    .hqa-ico { font-size: 15px; flex-shrink: 0; }
+    .hqa-placeholder { font-size: 14px; color: var(--text3); pointer-events: none; position: absolute; left: 42px; }
+    .hqa-ta { flex: 1; border: none; outline: none; font-size: 14px; color: var(--text); font-family: inherit; resize: none; line-height: 1.5; min-height: 22px; max-height: 120px; background: transparent; overflow: hidden; }
+    .hqa-actions { padding: 8px 2px 2px; display: flex; flex-direction: column; gap: 8px; }
+    .hqa-chips { display: flex; gap: 6px; overflow-x: auto; }
+    .hqa-chips::-webkit-scrollbar { display: none; }
+    .hqa-chip { padding: 5px 11px; border-radius: 9999px; font-size: 12px; font-weight: 500; border: 1.5px solid var(--border2); background: var(--surface); color: var(--text2); white-space: nowrap; cursor: pointer; transition: all .12s; flex-shrink: 0; }
+    .hqa-chip.sel { background: var(--primary-light); border-color: rgba(123,111,255,.35); color: var(--primary); font-weight: 600; }
+    .hqa-save { align-self: flex-end; padding: 8px 20px; background: linear-gradient(135deg,var(--primary),var(--primary-d)); border: none; border-radius: 9999px; color: white; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 4px 12px rgba(123,111,255,.32); transition: all .15s; }
+    .hqa-save:active { transform: scale(.95); }
   </style>
 </head>
 <body>
@@ -255,6 +270,24 @@
         <div class="hero">
           <div class="hero-icon"><img src="icon.png" alt="引力"></div>
           <div class="hero-text" id="greeting-text">晚上好，今天想记些什么？</div>
+        </div>
+
+        <!-- INLINE QUICK ADD -->
+        <div class="home-quick-add" id="home-quick-add">
+          <div class="hqa-wrap" id="hqa-wrap" onclick="hqaFocus()">
+            <span class="hqa-ico">✍️</span>
+            <span class="hqa-placeholder" id="hqa-placeholder">随手记一条灵感或链接…</span>
+            <textarea class="hqa-ta" id="hqa-ta" placeholder="随手记一条灵感或链接…" rows="1" oninput="hqaInput(this)" onblur="hqaBlur()" onfocus="hqaFocused()"></textarea>
+          </div>
+          <div class="hqa-actions" id="hqa-actions" style="display:none">
+            <div class="hqa-chips">
+              <div class="hqa-chip sel" onclick="selHqaChip(this)">💡 灵感</div>
+              <div class="hqa-chip" onclick="selHqaChip(this)">🔥 马上用</div>
+              <div class="hqa-chip" onclick="selHqaChip(this)">📚 学习</div>
+              <div class="hqa-chip" onclick="selHqaChip(this)">💬 要分享</div>
+            </div>
+            <button class="hqa-save" onclick="hqaSave()">收藏</button>
+          </div>
         </div>
 
         <!-- STATS -->
@@ -601,6 +634,49 @@
   function sheetSave(){const btn=document.getElementById('sheet-done');btn.classList.add('ok');btn.textContent='✓ 已保存';setTimeout(()=>{btn.classList.remove('ok');btn.textContent='保存';closeDetail();},900);}
 
   function triggerAI(e,btn){e.stopPropagation();btn.innerHTML='<span style="animation:spin .9s linear infinite;display:inline-block">✦</span> 整理中…';btn.disabled=true;setTimeout(()=>{const card=btn.closest('.k-card');card.classList.remove('unprocessed');card.dataset.folder='product';card.innerHTML='<div class="k-top"><span class="k-badge hot">🔥 马上用</span><span class="k-time">刚刚 · <span style="color:var(--primary)">✦ AI</span></span></div><div class="k-link"><span class="k-link-ico">📰</span><div><div class="k-link-name">如何建立产品增长模型</div><div class="k-link-dom">本地文件</div></div></div><div class="k-desc" style="font-size:11.5px">AARRR 框架拆解增长路径，是产品增长策略的核心工具。</div><div class="k-next"><span class="k-next-arr">→</span><span class="k-next-txt">评估当前哪个增长环节最薄弱</span></div>';card.onclick=()=>openDetail('如何建立产品增长模型','AARRR 框架系统拆解用户从获取到传播的完整路径。','评估当前哪个增长环节最薄弱');},1500);}
+
+  // Home Quick Add
+  function hqaFocus(){document.getElementById('hqa-ta').focus();}
+  function hqaFocused(){
+    document.getElementById('hqa-wrap').classList.add('focused');
+    document.getElementById('hqa-placeholder').style.display='none';
+    document.getElementById('hqa-actions').style.display='flex';
+    document.getElementById('hqa-actions').style.flexDirection='column';
+  }
+  function hqaBlur(){
+    setTimeout(()=>{
+      const ta=document.getElementById('hqa-ta');
+      if(!ta.value.trim()){
+        document.getElementById('hqa-wrap').classList.remove('focused');
+        document.getElementById('hqa-placeholder').style.display='';
+        document.getElementById('hqa-actions').style.display='none';
+      }
+    },200);
+  }
+  function hqaInput(el){
+    el.style.height='auto';
+    el.style.height=Math.min(el.scrollHeight,120)+'px';
+    document.getElementById('hqa-placeholder').style.display=el.value?'none':'';
+  }
+  function selHqaChip(el){
+    document.querySelectorAll('.hqa-chip').forEach(c=>c.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+  function hqaSave(){
+    const ta=document.getElementById('hqa-ta');
+    const content=ta.value.trim();
+    if(!content){ta.focus();return;}
+    const btn=document.querySelector('.hqa-save');
+    btn.textContent='✓';btn.style.background='linear-gradient(135deg,#34B36A,#22A35C)';
+    setTimeout(()=>{
+      ta.value='';ta.style.height='auto';
+      document.getElementById('hqa-wrap').classList.remove('focused');
+      document.getElementById('hqa-placeholder').style.display='';
+      document.getElementById('hqa-actions').style.display='none';
+      btn.textContent='收藏';btn.style.background='';
+      showToast('✓ 已收藏，AI 整理中');
+    },700);
+  }
 
   function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeCapture();closeInfo();closeDetail();}});
