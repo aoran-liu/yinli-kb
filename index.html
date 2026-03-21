@@ -118,7 +118,7 @@
     .feed-list::-webkit-scrollbar { display: none; }
 
     /* BOTTOM NAV */
-    .bottom-nav { height: 64px; display: flex; background: rgba(255,255,255,.92); backdrop-filter: blur(20px); border-top: 1px solid var(--border); flex-shrink: 0; z-index: 20; }
+    .bottom-nav { height: 64px; display: flex; background: rgba(255,255,255,.92); backdrop-filter: blur(20px); border-top: 1px solid var(--border); flex-shrink: 0; z-index: 110; position: relative; }
     .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; border: none; background: transparent; color: var(--text3); font-family: inherit; transition: color .15s; }
     .nav-item.active { color: var(--primary); }
     .nav-ico { font-size: 19px; }
@@ -270,22 +270,22 @@
           <span class="sec-more" onclick="goFeed('all')">全部 →</span>
         </div>
         <div class="cat-grid">
-          <div class="cat-card cc-1" onclick="goFeed('all')">
+          <div class="cat-card cc-1" onclick="goFeedByIntent('inspiration')">
             <div class="cc-emoji">💡</div>
             <div><div class="cc-label">灵感</div><div class="cc-count">12 条</div></div>
             <div class="cc-deco">💡</div>
           </div>
-          <div class="cat-card cc-2" onclick="goFeed('all')">
+          <div class="cat-card cc-2" onclick="goFeedByIntent('hot')">
             <div class="cc-emoji">🔥</div>
             <div><div class="cc-label">马上用</div><div class="cc-count">4 条</div></div>
             <div class="cc-deco">🔥</div>
           </div>
-          <div class="cat-card cc-3" onclick="goFeed('all')">
+          <div class="cat-card cc-3" onclick="goFeedByIntent('learning')">
             <div class="cc-emoji">📚</div>
             <div><div class="cc-label">学习</div><div class="cc-count">8 条</div></div>
             <div class="cc-deco">📚</div>
           </div>
-          <div class="cat-card cc-4" onclick="goFeed('all')">
+          <div class="cat-card cc-4" onclick="goFeedByIntent('sharing')">
             <div class="cc-emoji">💬</div>
             <div><div class="cc-label">要分享</div><div class="cc-count">6 条</div></div>
             <div class="cc-deco">💬</div>
@@ -319,40 +319,40 @@
           <input class="search-input" id="search-input" placeholder="搜索知识库…" oninput="doSearch(this.value)">
         </div>
         <div class="folder-strip">
-          <button class="folder-btn active" onclick="filterFolder(this,'all')">全部</button>
-          <button class="folder-btn" onclick="filterFolder(this,'inbox')">📥 收件箱</button>
-          <button class="folder-btn" onclick="filterFolder(this,'design')">🎨 设计</button>
-          <button class="folder-btn" onclick="filterFolder(this,'product')">🧩 产品</button>
-          <button class="folder-btn" onclick="filterFolder(this,'tech')">⚡ 技术</button>
-          <button class="folder-btn" onclick="filterFolder(this,'life')">🌿 生活</button>
+          <button class="folder-btn active" data-intent="all" onclick="filterFolder(this,'all')">全部</button>
+          <button class="folder-btn" data-intent="inspiration" onclick="filterFolder(this,'inspiration')">💡 灵感</button>
+          <button class="folder-btn" data-intent="hot" onclick="filterFolder(this,'hot')">🔥 马上用</button>
+          <button class="folder-btn" data-intent="learning" onclick="filterFolder(this,'learning')">📚 学习</button>
+          <button class="folder-btn" data-intent="sharing" onclick="filterFolder(this,'sharing')">💬 要分享</button>
+          <button class="folder-btn" data-intent="inbox" onclick="filterFolder(this,'inbox')">📥 未整理</button>
         </div>
       </div>
       <div class="feed-list" id="feed-list">
-        <div class="k-card fade-in" data-folder="design" onclick="openDetail('费曼学习法——用教来学','用最简单的语言向不懂的人解释概念，如果解释不清楚说明自己没真正理解。','整理成一篇文章分享出去')">
+        <div class="k-card fade-in" data-folder="design" data-intent="inspiration" onclick="openDetail('费曼学习法——用教来学','用最简单的语言向不懂的人解释概念，如果解释不清楚说明自己没真正理解。','整理成一篇文章分享出去')">
           <div class="k-top"><span class="k-badge">💡 灵感</span><span class="k-time">今天</span></div>
           <div class="k-title">费曼学习法——用教来学</div>
           <div class="k-desc">用最简单的语言向不懂的人解释概念，解释不清楚说明自己没真正理解。</div>
           <div class="k-next"><span class="k-next-arr">→</span><span class="k-next-txt">整理成一篇文章分享出去</span></div>
         </div>
-        <div class="k-card fade-in" data-folder="product" onclick="openDetail('AARRR 增长模型','海盗指标框架，拆解产品增长5个关键环节。','套用到 Q2 增长策略 PPT')" style="animation-delay:.05s">
+        <div class="k-card fade-in" data-folder="product" data-intent="hot" onclick="openDetail('AARRR 增长模型','海盗指标框架，拆解产品增长5个关键环节。','套用到 Q2 增长策略 PPT')" style="animation-delay:.05s">
           <div class="k-top"><span class="k-badge hot">🔥 马上用</span><span class="k-time">今天</span></div>
           <div class="k-title">AARRR 增长模型</div>
           <div class="k-desc">海盗指标框架，拆解产品增长的5个关键环节，每个阶段需独立策略和指标体系。</div>
           <div class="k-next"><span class="k-next-arr">→</span><span class="k-next-txt">套用到 Q2 增长策略 PPT</span></div>
         </div>
-        <div class="k-card fade-in" data-folder="tech" onclick="openDetail('Promise.all 并行请求','多个无依赖的异步操作要用 Promise.all 并行，不要串行 await。','重构项目里的瀑布式请求')" style="animation-delay:.1s">
+        <div class="k-card fade-in" data-folder="tech" data-intent="learning" onclick="openDetail('Promise.all 并行请求','多个无依赖的异步操作要用 Promise.all 并行，不要串行 await。','重构项目里的瀑布式请求')" style="animation-delay:.1s">
           <div class="k-top"><span class="k-badge">📚 学习</span><span class="k-time">昨天</span></div>
           <div class="k-link"><span class="k-link-ico">🔗</span><div><div class="k-link-name">Promise.all 并行请求最佳实践</div><div class="k-link-dom">javascript.info</div></div></div>
           <div class="k-desc" style="font-size:11.5px">无依赖异步用 Promise.all，不要串行 await</div>
           <div class="k-next"><span class="k-next-arr">→</span><span class="k-next-txt">重构项目里的瀑布式请求</span></div>
         </div>
-        <div class="k-card fade-in" data-folder="product" onclick="openDetail('用户访谈5大禁忌','❌ 问假设性场景 ❌ 封闭式问题 ❌ 引导性提问 ✅ 只问过去真实行为','做成一页 Cheatsheet 发给新同事')" style="animation-delay:.15s">
+        <div class="k-card fade-in" data-folder="product" data-intent="sharing" onclick="openDetail('用户访谈5大禁忌','❌ 问假设性场景 ❌ 封闭式问题 ❌ 引导性提问 ✅ 只问过去真实行为','做成一页 Cheatsheet 发给新同事')" style="animation-delay:.15s">
           <div class="k-top"><span class="k-badge share">💬 要分享</span><span class="k-time">3天前</span></div>
           <div class="k-title">用户访谈5大禁忌</div>
           <div class="k-desc">❌ 假设性场景 ❌ 封闭式问题 ❌ 引导性提问 ✅ 只问过去真实行为</div>
           <div class="k-next"><span class="k-next-arr">→</span><span class="k-next-txt">做成一页 Cheatsheet 发给新同事</span></div>
         </div>
-        <div class="k-card unprocessed fade-in" id="unorg-card" data-folder="inbox" style="animation-delay:.2s">
+        <div class="k-card unprocessed fade-in" id="unorg-card" data-folder="inbox" data-intent="inbox" style="animation-delay:.2s">
           <div class="k-top"><span style="font-size:11px;color:var(--text3)">📥 未整理</span><span class="k-time">5天前</span></div>
           <div class="k-link"><span class="k-link-ico">📰</span><div><div class="k-link-name">如何建立产品增长模型.pdf</div><div class="k-link-dom">本地文件</div></div></div>
           <button class="btn-ai" onclick="triggerAI(event,this)">✦ AI 一键整理</button>
@@ -536,10 +536,25 @@
   }
 
   // Feed filter
-  let currentFolder='all',currentSearch='';
-  function filterFolder(btn,folder){document.querySelectorAll('.folder-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFolder=folder;applyFilter();}
+  let currentFolder='all',currentSearch='',currentIntent='all';
+  function filterFolder(btn,intent){document.querySelectorAll('.folder-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentIntent=intent;applyFilter();}
   function doSearch(q){currentSearch=q.trim().toLowerCase();applyFilter();}
-  function applyFilter(){document.querySelectorAll('#feed-list .k-card').forEach(c=>{const fo=currentFolder==='all'||c.dataset.folder===currentFolder;const so=!currentSearch||c.textContent.toLowerCase().includes(currentSearch);c.classList.toggle('hidden',!(fo&&so));});}
+  function applyFilter(){
+    document.querySelectorAll('#feed-list .k-card').forEach(c=>{
+      const intentMatch=currentIntent==='all'||c.dataset.intent===currentIntent;
+      const searchMatch=!currentSearch||c.textContent.toLowerCase().includes(currentSearch);
+      c.classList.toggle('hidden',!(intentMatch&&searchMatch));
+    });
+  }
+  function goFeedByIntent(intent){
+    switchTab('feed');
+    // 激活对应的 filter 按钮
+    document.querySelectorAll('.folder-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.intent===intent);
+    });
+    currentIntent=intent;
+    applyFilter();
+  }
 
   // Capture sheet
   function openCapture(){document.getElementById('overlay').classList.add('show');document.getElementById('capture-sheet').classList.add('open');setTimeout(()=>document.getElementById('capture-text')?.focus(),320);}
