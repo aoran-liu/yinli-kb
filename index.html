@@ -276,7 +276,6 @@
         <div class="home-quick-add" id="home-quick-add">
           <div class="hqa-wrap" id="hqa-wrap" onclick="hqaFocus()">
             <span class="hqa-ico">✍️</span>
-            <span class="hqa-placeholder" id="hqa-placeholder">随手记一条灵感或链接…</span>
             <textarea class="hqa-ta" id="hqa-ta" placeholder="随手记一条灵感或链接…" rows="1" oninput="hqaInput(this)" onblur="hqaBlur()" onfocus="hqaFocused()"></textarea>
           </div>
           <div class="hqa-actions" id="hqa-actions" style="display:none">
@@ -638,7 +637,6 @@
   function hqaFocus(){document.getElementById('hqa-ta').focus();}
   function hqaFocused(){
     document.getElementById('hqa-wrap').classList.add('focused');
-    document.getElementById('hqa-placeholder').style.display='none';
     document.getElementById('hqa-actions').style.display='flex';
     document.getElementById('hqa-actions').style.flexDirection='column';
   }
@@ -647,7 +645,6 @@
       const ta=document.getElementById('hqa-ta');
       if(!ta.value.trim()){
         document.getElementById('hqa-wrap').classList.remove('focused');
-        document.getElementById('hqa-placeholder').style.display='';
         document.getElementById('hqa-actions').style.display='none';
       }
     },200);
@@ -655,7 +652,6 @@
   function hqaInput(el){
     el.style.height='auto';
     el.style.height=Math.min(el.scrollHeight,120)+'px';
-    document.getElementById('hqa-placeholder').style.display=el.value?'none':'';
   }
   function selHqaChip(el){
     document.querySelectorAll('.hqa-chip').forEach(c=>c.classList.remove('sel'));
