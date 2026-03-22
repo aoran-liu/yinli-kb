@@ -279,11 +279,20 @@
             <textarea class="hqa-ta" id="hqa-ta" placeholder="随手记一条灵感或链接…" rows="1" oninput="hqaInput(this)" onblur="hqaBlur()" onfocus="hqaFocused()"></textarea>
           </div>
           <div class="hqa-actions" id="hqa-actions" style="display:none">
-            <div class="hqa-chips">
-              <div class="hqa-chip sel" onclick="selHqaChip(this)">💡 灵感</div>
-              <div class="hqa-chip" onclick="selHqaChip(this)">🔥 马上用</div>
-              <div class="hqa-chip" onclick="selHqaChip(this)">📚 学习</div>
-              <div class="hqa-chip" onclick="selHqaChip(this)">💬 要分享</div>
+            <div style="font-size:10.5px;color:var(--text3);font-weight:600;letter-spacing:.02em;margin-bottom:5px">用来做什么</div>
+            <div class="hqa-chips" id="hqa-intent-chips">
+              <div class="hqa-chip sel" onclick="selHqaIntentChip(this)">💡 灵感</div>
+              <div class="hqa-chip" onclick="selHqaIntentChip(this)">🔥 马上用</div>
+              <div class="hqa-chip" onclick="selHqaIntentChip(this)">📚 学习</div>
+              <div class="hqa-chip" onclick="selHqaIntentChip(this)">💬 要分享</div>
+            </div>
+            <div style="font-size:10.5px;color:var(--text3);font-weight:600;letter-spacing:.02em;margin:8px 0 5px">存入收藏夹</div>
+            <div class="hqa-chips" id="hqa-folder-chips">
+              <div class="hqa-chip sel" onclick="selHqaFolderChip(this)">📥 收件箱</div>
+              <div class="hqa-chip" onclick="selHqaFolderChip(this)">🎨 设计</div>
+              <div class="hqa-chip" onclick="selHqaFolderChip(this)">🧩 产品</div>
+              <div class="hqa-chip" onclick="selHqaFolderChip(this)">⚡ 技术</div>
+              <div class="hqa-chip" onclick="selHqaFolderChip(this)">🌿 生活</div>
             </div>
             <button class="hqa-save" onclick="hqaSave()">收藏</button>
           </div>
@@ -653,8 +662,12 @@
     el.style.height='auto';
     el.style.height=Math.min(el.scrollHeight,120)+'px';
   }
-  function selHqaChip(el){
-    document.querySelectorAll('.hqa-chip').forEach(c=>c.classList.remove('sel'));
+  function selHqaIntentChip(el){
+    document.querySelectorAll('#hqa-intent-chips .hqa-chip').forEach(c=>c.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+  function selHqaFolderChip(el){
+    document.querySelectorAll('#hqa-folder-chips .hqa-chip').forEach(c=>c.classList.remove('sel'));
     el.classList.add('sel');
   }
   function hqaSave(){
