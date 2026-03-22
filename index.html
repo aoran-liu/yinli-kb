@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
   <title>引力</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -24,7 +24,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { width: 100%; height: 100%; background: var(--bg); color: var(--text); font-family: 'Inter',-apple-system,'PingFang SC',sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
-    .app { display: flex; flex-direction: column; height: 100dvh; max-width: 430px; margin: 0 auto; overflow: hidden; background: var(--bg); position: relative; padding-bottom: 64px; }
+    .app { display: flex; flex-direction: column; height: 100dvh; max-width: 430px; margin: 0 auto; overflow: hidden; background: var(--bg); position: relative; }
 
     /* AMBIENT GLOW */
     .glow { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
@@ -118,7 +118,7 @@
     .feed-list::-webkit-scrollbar { display: none; }
 
     /* BOTTOM NAV */
-    .bottom-nav { height: 64px; display: flex; background: rgba(255,255,255,.92); backdrop-filter: blur(20px); border-top: 1px solid var(--border); flex-shrink: 0; z-index: 110; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; }
+    .bottom-nav { height: 64px; display: flex; background: rgba(255,255,255,.92); backdrop-filter: blur(20px); border-top: 1px solid var(--border); flex-shrink: 0; z-index: 110; position: relative; }
     .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; border: none; background: transparent; color: var(--text3); font-family: inherit; transition: color .15s; }
     .nav-item.active { color: var(--primary); }
     .nav-ico { font-size: 19px; }
