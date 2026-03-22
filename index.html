@@ -24,7 +24,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { width: 100%; height: 100%; background: var(--bg); color: var(--text); font-family: 'Inter',-apple-system,'PingFang SC',sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
-    .app { display: flex; flex-direction: column; height: 100dvh; max-width: 430px; margin: 0 auto; overflow: hidden; background: var(--bg); position: relative; }
+    .app { display: flex; flex-direction: column; height: 100dvh; max-width: 430px; margin: 0 auto; overflow: hidden; background: var(--bg); position: relative; padding-bottom: 64px; }
 
     /* AMBIENT GLOW */
     .glow { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
@@ -118,7 +118,7 @@
     .feed-list::-webkit-scrollbar { display: none; }
 
     /* BOTTOM NAV */
-    .bottom-nav { height: 64px; display: flex; background: rgba(255,255,255,.92); backdrop-filter: blur(20px); border-top: 1px solid var(--border); flex-shrink: 0; z-index: 110; position: relative; }
+    .bottom-nav { height: 64px; display: flex; background: rgba(255,255,255,.92); backdrop-filter: blur(20px); border-top: 1px solid var(--border); flex-shrink: 0; z-index: 110; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; }
     .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; border: none; background: transparent; color: var(--text3); font-family: inherit; transition: color .15s; }
     .nav-item.active { color: var(--primary); }
     .nav-ico { font-size: 19px; }
@@ -559,18 +559,21 @@
       if(tb)tb.classList.toggle('active',id===t);
     });
   }
-  function goFeed(folder){
+  function goFeed(intent){
     switchTab('feed');
-    document.querySelectorAll('.folder-btn').forEach(b=>{
-      const m=folder==='all'?b.textContent.trim()==='全部':b.getAttribute('onclick')?.includes("'"+folder+"'");
-      b.classList.toggle('active',!!m);
-    });
-    currentFolder=folder;applyFilter();
+    setIntent(intent);
+    applyFilter();
   }
 
   // Feed filter
-  let currentFolder='all',currentSearch='',currentIntent='all';
-  function filterFolder(btn,intent){document.querySelectorAll('.folder-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentIntent=intent;applyFilter();}
+  let currentSearch='',currentIntent='all';
+  function setIntent(intent){
+    currentIntent=intent;
+    document.querySelectorAll('.folder-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.intent===intent);
+    });
+  }
+  function filterFolder(btn,intent){setIntent(intent);applyFilter();}
   function doSearch(q){currentSearch=q.trim().toLowerCase();applyFilter();}
   function applyFilter(){
     document.querySelectorAll('#feed-list .k-card').forEach(c=>{
@@ -581,11 +584,7 @@
   }
   function goFeedByIntent(intent){
     switchTab('feed');
-    // 激活对应的 filter 按钮
-    document.querySelectorAll('.folder-btn').forEach(b=>{
-      b.classList.toggle('active', b.dataset.intent===intent);
-    });
-    currentIntent=intent;
+    setIntent(intent);
     applyFilter();
   }
 
